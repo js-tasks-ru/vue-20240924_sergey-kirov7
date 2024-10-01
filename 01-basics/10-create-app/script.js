@@ -1,6 +1,5 @@
 import { defineComponent, createApp } from 'vue';
 
-
 const App = defineComponent({
     name: 'App',
     setup() {
