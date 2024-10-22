@@ -1,26 +1,52 @@
-import { defineComponent } from 'vue'
+import { defineComponent, ref, computed, watch } from 'vue/dist/vue.esm-bundler'
 
 export default defineComponent({
   name: 'CalculatorApp',
 
-  setup() {},
+  setup() {
+    const fistOperand = ref(0);
+    const secondOperand = ref(0);
+    const checked = ref("");
+
+    let result = computed(() => {
+      return checked === "sum" ? fistOperand.value + fistOperand.value : fistOperand.value;
+      // switch(checked) {
+      //   case 'sum':
+      //     return fistOperand.value + secondOperand.value
+
+      //   default:
+      //     return 999;
+      // }
+    });
+
+    watch(result, (result) => {
+      console.log(result);
+    })
+
+    return {
+      result,
+      checked,
+      fistOperand,
+      secondOperand,
+    }
+  },
 
   template: `
     <div class="calculator">
-      <input type="number" aria-label="First operand" />
+      <input type="number" aria-label="First operand" v-model.lazy="fistOperand" />
 
       <div class="calculator__operators">
-        <label><input type="radio" name="operator" value="sum"/>➕</label>
-        <label><input type="radio" name="operator" value="subtract"/>➖</label>
-        <label><input type="radio" name="operator" value="multiply"/>✖</label>
-        <label><input type="radio" name="operator" value="divide"/>➗</label>
+        <label><input type="radio" name="operator" v-model.lazy="checked" value="sum"/>➕</label>
+        <label><input type="radio" name="operator" v-model.lazy="checked" value="subtract"/>➖</label>
+        <label><input type="radio" name="operator" v-model.lazy="checked" value="multiply"/>✖</label>
+        <label><input type="radio" name="operator" v-model.lazy="checked" value="divide"/>➗</label>
       </div>
 
-      <input type="number" aria-label="Second operand" />
+      <input type="number" aria-label="Second operand" v-model.lazy="secondOperand" />
 
       <div>=</div>
 
-      <output>0</output>
+      <output>{{ result }}</output>
     </div>
   `,
 })
