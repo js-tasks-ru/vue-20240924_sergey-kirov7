@@ -14,20 +14,8 @@ export default defineComponent({
       return res.toFixed(1);
     };
 
-    function createTime(time) {
-      const timeArr = time.split(':');
-      const hour = timeArr[0];
-      const minutes = timeArr[1];
-      let newDate = new Date();
-
-      newDate.setHours(Number(hour));
-      newDate.setMinutes(Number(minutes));
-
-      return newDate;
-    }
-
-    function setCardClass(dt, sunrise, sunset) {
-      const isNight = createTime(dt) < createTime(sunrise);
+    function getCardClass(dt, sunrise, sunset) {
+      const isNight = dt < sunrise;
       const res = isNight ? 'weather-card weather-card--night' : 'weather-card';
 
       return res;
@@ -43,7 +31,7 @@ export default defineComponent({
       weather,
       farengeitToCelc,
       icons,
-      setCardClass,
+      getCardClass,
       pressToHg,
     }
   },
@@ -53,7 +41,7 @@ export default defineComponent({
       <h1 class="title">Погода в Средиземье</h1>
 
       <ul class="weather-list unstyled-list">
-        <li v-for="{geographic_name, current, alert} in weather" key="" :class="setCardClass(current.dt, current.sunrise, current.sunset)">
+        <li v-for="{geographic_name, current, alert} in weather" key="" :class="getCardClass(current.dt, current.sunrise, current.sunset)">
           <div v-if="alert" class="weather-alert">
             <span class="weather-alert__icon">⚠️</span>
             <span class="weather-alert__description">{{ alert.sender_name }}\n{{ alert.description }}</span>
