@@ -4,12 +4,10 @@ export default defineComponent({
   name: 'CounterApp',
 
   setup() {
-    let count = ref(0);
-    // let isDisabled = computed( () => count < 0 ? true : false);
+    const count = ref(0);
 
     return {
       count,
-      // isDisabled,
     }
   },
 
@@ -19,7 +17,7 @@ export default defineComponent({
         class="button button--secondary"
         type="button"
         aria-label="Decrement"
-        :disabled="count <= 0 ? true : false"
+        :disabled="count <= 0"
         @click="count--"
       >➖</button>
 
@@ -29,7 +27,7 @@ export default defineComponent({
         class="button button--secondary"
         type="button"
         aria-label="Increment"
-        :disabled="count >= 5 ? true : false"
+        :disabled="count >= 5"
         @click="count++"
       >➕</button>
     </div>
