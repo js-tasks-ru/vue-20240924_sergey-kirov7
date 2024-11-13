@@ -1,4 +1,4 @@
-import { defineComponent, ref, watch } from 'vue'
+import { defineComponent, ref, watch, reactive, computed } from 'vue/dist/vue.esm-bundler'
 
 export default defineComponent({
   name: 'MapApp',
@@ -13,27 +13,31 @@ export default defineComponent({
      * @param {MouseEvent} event
      */
     function handleClick(event) {
-      x = event.offsetX
-      y = event.offsetY
+      x.value = event.offsetX
+      y.value = event.offsetY
     }
 
-    // Следим за X и Y для установки нового положения
-    watch([x, y], () => {
-      // Находим метку и изменяем её положение
-      const map = document.querySelector('.pin')
-      map.style.left = `${x}px`
-      map.style.top = `${y}px`
+    // const style = reactive({});
+
+    const left = computed(()=> {
+      return x.value;
+    })
+
+    const top = computed(()=> {
+      return y.value;
     })
 
     return {
       handleClick,
+      left,
+      top,
     }
   },
 
   template: `
     <div class="map" @click="handleClick">
       <img class="map-image" src="./map.png" alt="Map" draggable="false" />
-      <span class="pin">📍</span>
+      <span class="pin" :style="{ 'left': left + 'px', 'top': top + 'px' }">📍</span>
     </div>
   `,
 })
